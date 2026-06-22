@@ -11,10 +11,18 @@
           "custom-variant",
           "layer",
           "config",
-          "import"
+          "import",
+          "screen"
         ]
       }
     ],
-    "import-notation": "string"
+    "import-notation": "string",
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": ["composes"]
+      }
+    ],
+    "no-invalid-double-slash-comments": null
   }
 }
