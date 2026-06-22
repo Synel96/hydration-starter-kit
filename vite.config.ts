@@ -1,30 +1,40 @@
 import vike from "vike/plugin";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import path from "path";
+import tailwindcss from "@tailwindcss/vite";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-export default defineConfig({
-  plugins: [vike(), react()],
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+export default defineConfig(({ isSsrBuild }) => ({
+  plugins: [tailwindcss(), vike(), react()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./"),
+      "@": resolve(__dirname, "./"),
     },
   },
   build: {
     rollupOptions: {
-      output: {
-        manualChunks: {
-          // Vendor chunks
-          "vendor-react": ["react", "react-dom"],
-          "vendor-vike": ["vike", "vike-react"],
-        },
-        chunkFileNames: "chunks/[name]-[hash].js",
-        entryFileNames: "[name]-[hash].js",
-      },
+      output: isSsrBuild
+        ? undefined
+        : {
+            // Keep vendor libraries in stable chunks for better browser caching.
+            manualChunks(id) {
+              if (id.includes("node_modules/react") || id.includes("node_modules/react-dom")) {
+                return "vendor-react";
+              }
+              if (id.includes("node_modules/vike") || id.includes("node_modules/vike-react")) {
+                return "vendor-vike";
+              }
+              return undefined;
+            },
+            chunkFileNames: "chunks/[name]-[hash].js",
+          },
     },
     // Chunk size warning threshold (in kb)
     chunkSizeWarningLimit: 500,
-    // Enable source maps in production for debugging
+    // Disable source maps in production.
     sourcemap: false,
   },
-});
+}));

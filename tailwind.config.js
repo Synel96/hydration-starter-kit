@@ -1,11 +1,4 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-};
+// Tailwind v4: content scanning and theme configuration moved to Layout.css
+// (@source directives and @theme blocks)
+// This file is kept for editor tooling compatibility.
+export default {};
