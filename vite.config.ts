@@ -1,9 +1,15 @@
 import vike from "vike/plugin";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import path from "path";
 
 export default defineConfig({
   plugins: [vike(), react()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./"),
+    },
+  },
   build: {
     rollupOptions: {
       output: {
