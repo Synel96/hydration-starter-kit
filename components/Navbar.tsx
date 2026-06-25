@@ -2,6 +2,7 @@ import { MenuIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { usePageContext } from "vike-react/usePageContext";
 import { Button } from "@/components/ui/button";
+import { useMounted } from "@/src/hooks/use-mounted";
 import {
   Sheet,
   SheetClose,
@@ -15,6 +16,7 @@ import { BRAND_NAME, NAV_LINKS } from "./site";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const mounted = useMounted();
   const pageContext = usePageContext();
   const { urlPathname } = pageContext;
 
@@ -42,57 +44,69 @@ export function Navbar() {
         </nav>
 
         <div className="md:hidden">
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="Open menu"
-                onClick={() => setOpen(true)}
-                className="text-(--brand-on-surface) hover:bg-white/10 hover:text-(--brand-on-surface)"
-              >
-                <span className="relative size-5">
-                  <MenuIcon
-                    className={`absolute inset-0 size-5 transition-all duration-300 ${
-                      open ? "scale-0 rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"
-                    }`}
-                  />
-                  <XIcon
-                    className={`absolute inset-0 size-5 transition-all duration-300 ${
-                      open ? "scale-100 rotate-0 opacity-100" : "scale-0 -rotate-90 opacity-0"
-                    }`}
-                  />
-                </span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="w-80 border-r-white/10 bg-(--brand-surface) text-(--brand-on-surface)"
-            >
-              <SheetHeader>
-                <SheetTitle>{BRAND_NAME}</SheetTitle>
-                <SheetDescription className="text-white/70">Navigation menu</SheetDescription>
-              </SheetHeader>
-
-              <nav className="mt-2 flex flex-col gap-1 px-4 pb-6">
-                {NAV_LINKS.map((item) => (
-                  <SheetClose asChild key={item.href}>
-                    <a
-                      href={item.href}
-                      onClick={() => setOpen(false)}
-                      className={`rounded-md px-3 py-2 text-sm ${
-                        isActive(item.href)
-                          ? "bg-white/15 font-medium text-(--brand-on-surface)"
-                          : "text-white/75 hover:bg-white/10 hover:text-(--brand-on-surface)"
+          {mounted ? (
+            <Sheet open={open} onOpenChange={setOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Open menu"
+                  onClick={() => setOpen(true)}
+                  className="text-(--brand-on-surface) hover:bg-white/10 hover:text-(--brand-on-surface)"
+                >
+                  <span className="relative size-5">
+                    <MenuIcon
+                      className={`absolute inset-0 size-5 transition-all duration-300 ${
+                        open ? "scale-0 rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"
                       }`}
-                    >
-                      {item.label}
-                    </a>
-                  </SheetClose>
-                ))}
-              </nav>
-            </SheetContent>
-          </Sheet>
+                    />
+                    <XIcon
+                      className={`absolute inset-0 size-5 transition-all duration-300 ${
+                        open ? "scale-100 rotate-0 opacity-100" : "scale-0 -rotate-90 opacity-0"
+                      }`}
+                    />
+                  </span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent
+                side="right"
+                className="w-80 border-r-white/10 bg-(--brand-surface) text-(--brand-on-surface)"
+              >
+                <SheetHeader>
+                  <SheetTitle>{BRAND_NAME}</SheetTitle>
+                  <SheetDescription className="text-white/70">Navigation menu</SheetDescription>
+                </SheetHeader>
+
+                <nav className="mt-2 flex flex-col gap-1 px-4 pb-6">
+                  {NAV_LINKS.map((item) => (
+                    <SheetClose asChild key={item.href}>
+                      <a
+                        href={item.href}
+                        onClick={() => setOpen(false)}
+                        className={`rounded-md px-3 py-2 text-sm ${
+                          isActive(item.href)
+                            ? "bg-white/15 font-medium text-(--brand-on-surface)"
+                            : "text-white/75 hover:bg-white/10 hover:text-(--brand-on-surface)"
+                        }`}
+                      >
+                        {item.label}
+                      </a>
+                    </SheetClose>
+                  ))}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Open menu"
+              disabled
+              className="text-(--brand-on-surface) hover:bg-white/10 hover:text-(--brand-on-surface)"
+            >
+              <MenuIcon className="size-5" />
+            </Button>
+          )}
         </div>
       </div>
     </header>
