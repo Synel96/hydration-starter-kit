@@ -5,17 +5,21 @@ import geistFontUrl from "@fontsource-variable/geist/files/geist-latin-wght-norm
 import { usePageContext } from "vike-react/usePageContext";
 import { SITE_URL, BRAND_NAME } from "../components/site";
 import { buildMeta } from "../src/seo";
+import { DEFAULT_LANG, type SupportedLang } from "../src/i18n-config";
 
 export function Head() {
   const pageContext = usePageContext() as {
     urlPathname: string;
+    lang?: SupportedLang;
     config?: {
       title?: string;
       description?: string;
     };
   };
+  const lang = pageContext.lang ?? DEFAULT_LANG;
   const meta = buildMeta({
     pathname: pageContext.urlPathname,
+    lang,
     title: pageContext.config?.title,
     description: pageContext.config?.description,
   });
@@ -24,6 +28,11 @@ export function Head() {
     <>
       <link rel="icon" href={logoUrl} />
       <link rel="canonical" href={meta.canonicalUrl} />
+
+      {/* hreflang alternates — tells Google which URL serves which language */}
+      {meta.alternates.map((alt) => (
+        <link key={alt.hreflang} rel="alternate" hrefLang={alt.hreflang} href={alt.href} />
+      ))}
 
       {/* Open Graph / Social Media */}
       <meta property="og:type" content="website" />
@@ -43,11 +52,10 @@ export function Head() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Organization", // Or "LocalBusiness", "Article", etc. depending on page
+            "@type": "Organization",
             name: BRAND_NAME,
             url: SITE_URL,
             logo: `${SITE_URL}/logo.svg`,
-            // Add more fields as needed: sameAs, address, contactPoint, etc.
           }),
         }}
       />

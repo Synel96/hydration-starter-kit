@@ -1,9 +1,11 @@
 // components/LanguageSwitcher.tsx
-// Renders a compact button group to switch between supported languages.
-// Persists selection in localStorage (via i18next LanguageDetector).
+// Switches language by navigating to the same logical path under the new
+// lang prefix, e.g. /en/about → /hu/about.
+// The URL is the single source of truth — no localStorage involved.
 
-import { useTranslation } from "react-i18next";
-import { SUPPORTED_LANGS, type SupportedLang } from "@/src/i18n";
+import { navigate } from "vike/client/router";
+import { usePageContext } from "vike-react/usePageContext";
+import { SUPPORTED_LANGS, DEFAULT_LANG, type SupportedLang } from "@/src/i18n-config";
 import { Button } from "@/components/ui/button";
 
 const LABELS: Record<SupportedLang, string> = {
@@ -12,8 +14,15 @@ const LABELS: Record<SupportedLang, string> = {
 };
 
 export function LanguageSwitcher() {
-  const { i18n } = useTranslation();
-  const currentLang = i18n.resolvedLanguage as SupportedLang;
+  const pageContext = usePageContext() as { lang?: SupportedLang; urlPathname: string };
+  const currentLang = pageContext.lang ?? DEFAULT_LANG;
+  // urlPathname is the logical path without the lang prefix (set by onBeforeRoute)
+  const logicalPath = pageContext.urlPathname;
+
+  const switchTo = (lang: SupportedLang) => {
+    const target = logicalPath === "/" ? `/${lang}/` : `/${lang}${logicalPath}`;
+    navigate(target);
+  };
 
   return (
     <div className="flex items-center gap-1" aria-label="Language switcher">
@@ -22,7 +31,7 @@ export function LanguageSwitcher() {
           key={lang}
           variant="ghost"
           size="sm"
-          onClick={() => i18n.changeLanguage(lang)}
+          onClick={() => switchTo(lang)}
           aria-pressed={currentLang === lang}
           aria-label={`Switch to ${lang.toUpperCase()}`}
           className={

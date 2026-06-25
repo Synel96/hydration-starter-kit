@@ -15,13 +15,18 @@ import {
 } from "@/components/ui/sheet";
 import { BRAND_NAME, NAV_LINKS } from "./site";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { DEFAULT_LANG, type SupportedLang } from "@/src/i18n-config";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const mounted = useMounted();
-  const pageContext = usePageContext();
+  const pageContext = usePageContext() as { urlPathname: string; lang?: SupportedLang };
   const { urlPathname } = pageContext;
+  const lang = pageContext.lang ?? DEFAULT_LANG;
   const { t } = useTranslation();
+
+  // Build a URL with the current lang prefix
+  const langHref = (href: string) => (href === "/" ? `/${lang}/` : `/${lang}${href}`);
 
   const isActive = (href: string) =>
     href === "/" ? urlPathname === href : urlPathname.startsWith(href);
@@ -34,13 +39,13 @@ export function Navbar() {
   return (
     <header className="border-b border-white/10 bg-(--brand-surface) text-(--brand-on-surface) backdrop-blur supports-backdrop-filter:bg-[color-mix(in_oklch,var(--brand-surface),transparent_5%)]">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
-        <a href="/" className="text-base font-semibold tracking-tight text-(--brand-on-surface)">
+        <a href={langHref("/")} className="text-base font-semibold tracking-tight text-(--brand-on-surface)">
           {BRAND_NAME}
         </a>
 
         <nav className="hidden items-center gap-6 md:flex">
           {NAV_LINKS.map((item) => (
-            <a key={item.href} href={item.href} className={navLinkClass(item.href)}>
+            <a key={item.href} href={langHref(item.href)} className={navLinkClass(item.href)}>
               {item.label}
             </a>
           ))}
@@ -88,7 +93,7 @@ export function Navbar() {
                   {NAV_LINKS.map((item) => (
                     <SheetClose asChild key={item.href}>
                       <a
-                        href={item.href}
+                        href={langHref(item.href)}
                         onClick={() => setOpen(false)}
                         className={`rounded-md px-3 py-2 text-sm ${
                           isActive(item.href)
