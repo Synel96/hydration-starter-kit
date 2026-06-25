@@ -49,7 +49,7 @@ export function Navbar() {
         <nav className="hidden items-center gap-6 md:flex">
           {NAV_LINKS.map((item) => (
             <a key={item.href} href={langHref(item.href)} className={navLinkClass(item.href)}>
-              {item.label}
+              {t(item.labelKey)}
             </a>
           ))}
         </nav>
@@ -106,7 +106,7 @@ export function Navbar() {
                             : "text-white/75 hover:bg-white/10 hover:text-(--brand-on-surface)"
                         }`}
                       >
-                        {item.label}
+                        {t(item.labelKey)}
                       </a>
                     </SheetClose>
                   ))}

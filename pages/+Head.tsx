@@ -61,13 +61,7 @@ export function Head() {
       />
 
       {/* Preload the primary (Latin) font so it starts downloading early */}
-      <link
-        rel="preload"
-        href={geistFontUrl}
-        as="font"
-        type="font/woff2"
-        crossOrigin="anonymous"
-      />
+      <link rel="preload" href={geistFontUrl} as="font" type="font/woff2" crossOrigin="anonymous" />
     </>
   );
 }

@@ -14,11 +14,11 @@ export function PageLoading() {
       <div className="flex flex-col items-center gap-4">
         <div className="page-loading-spinner relative size-14">
           <span className="absolute inset-0 rounded-full border-2 border-white/15" />
-          <span className="absolute inset-0 rounded-full border-2 border-t-white border-r-white/40 border-b-transparent border-l-transparent animate-spin" />
+          <span className="absolute inset-0 animate-spin rounded-full border-2 border-t-white border-r-white/40 border-b-transparent border-l-transparent" />
         </div>
 
         {logoError ? (
-          <span className="text-sm font-medium tracking-[0.2em] uppercase text-white/80">
+          <span className="text-sm font-medium tracking-[0.2em] text-white/80 uppercase">
             {BRAND_NAME}
           </span>
         ) : (

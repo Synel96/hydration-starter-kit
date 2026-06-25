@@ -1,4 +1,7 @@
+import { useTranslation } from "react-i18next";
+import { usePageContext } from "vike-react/usePageContext";
 import { BRAND_NAME, NAV_LINKS } from "./site";
+import { DEFAULT_LANG, type SupportedLang } from "@/src/i18n-config";
 
 type FooterProps = {
   brandName?: string;
@@ -6,6 +9,11 @@ type FooterProps = {
 
 export function Footer({ brandName = BRAND_NAME }: FooterProps) {
   const year = new Date().getFullYear();
+  const { t } = useTranslation();
+  const pageContext = usePageContext() as { lang?: SupportedLang };
+  const lang = pageContext.lang ?? DEFAULT_LANG;
+
+  const langHref = (href: string) => (href === "/" ? `/${lang}/` : `/${lang}${href}`);
 
   return (
     <footer className="border-t border-white/10 bg-(--brand-surface) text-(--brand-on-surface)">
@@ -14,15 +22,15 @@ export function Footer({ brandName = BRAND_NAME }: FooterProps) {
           {NAV_LINKS.map((item) => (
             <a
               key={item.href}
-              href={item.href}
+              href={langHref(item.href)}
               className="text-white/85 transition-colors hover:text-white"
             >
-              {item.label}
+              {t(item.labelKey)}
             </a>
           ))}
         </nav>
         <span>
-          {year} {brandName}. All rights reserved.
+          {year} {brandName}. {t("footer.allRightsReserved")}
         </span>
       </div>
     </footer>
