@@ -39,7 +39,10 @@ export function Navbar() {
   return (
     <header className="border-b border-white/10 bg-(--brand-surface) text-(--brand-on-surface) backdrop-blur supports-backdrop-filter:bg-[color-mix(in_oklch,var(--brand-surface),transparent_5%)]">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
-        <a href={langHref("/")} className="text-base font-semibold tracking-tight text-(--brand-on-surface)">
+        <a
+          href={langHref("/")}
+          className="text-base font-semibold tracking-tight text-(--brand-on-surface)"
+        >
           {BRAND_NAME}
         </a>
 
@@ -86,7 +89,9 @@ export function Navbar() {
               >
                 <SheetHeader>
                   <SheetTitle>{BRAND_NAME}</SheetTitle>
-                  <SheetDescription className="text-white/70">{t("nav.navigationMenu")}</SheetDescription>
+                  <SheetDescription className="text-white/70">
+                    {t("nav.navigationMenu")}
+                  </SheetDescription>
                 </SheetHeader>
 
                 <nav className="mt-2 flex flex-col gap-1 px-4 pb-6">
@@ -106,6 +111,10 @@ export function Navbar() {
                     </SheetClose>
                   ))}
                 </nav>
+
+                <div className="border-t border-white/10 px-4 pt-4 pb-6">
+                  <LanguageSwitcher />
+                </div>
               </SheetContent>
             </Sheet>
           ) : (
