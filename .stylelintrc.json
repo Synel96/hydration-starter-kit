@@ -12,7 +12,8 @@
           "layer",
           "config",
           "import",
-          "screen"
+          "screen",
+          "source"
         ]
       }
     ],
@@ -23,6 +24,8 @@
         "ignoreProperties": ["composes"]
       }
     ],
-    "no-invalid-double-slash-comments": null
+    "no-invalid-double-slash-comments": null,
+    "lightness-notation": null,
+    "hue-degree-notation": null
   }
 }

@@ -1,4 +1,4 @@
-import { BRAND_NAME, SITE_URL } from "../components/site";
+import { BRAND_NAME, SITE_URL, OG_IMAGE_PATH } from "../components/site";
 import { SUPPORTED_LANGS, DEFAULT_LANG, type SupportedLang } from "./i18n-config";
 
 type BuildMetaInput = {
@@ -37,7 +37,7 @@ export function buildMeta({ pathname, lang, title, description }: BuildMetaInput
     canonicalUrl,
     title: resolvedTitle,
     description: resolvedDescription,
-    image: `${SITE_URL}/og-image.jpg`,
+    image: new URL(OG_IMAGE_PATH, SITE_URL).toString(),
     alternates,
   };
 }
