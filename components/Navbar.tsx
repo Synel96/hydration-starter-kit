@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useMounted } from "@/src/hooks/use-mounted";
 import {
   Sheet,
@@ -54,80 +55,84 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center md:flex">
-          <LanguageSwitcher />
-        </div>
+        <div className="flex items-center gap-1">
+          <div className="hidden items-center md:flex">
+            <LanguageSwitcher />
+          </div>
 
-        <div className="md:hidden">
-          {mounted ? (
-            <Sheet open={open} onOpenChange={setOpen}>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label={t("nav.openMenu")}
-                  onClick={() => setOpen(true)}
-                  className="text-(--brand-on-surface) hover:bg-white/10 hover:text-(--brand-on-surface)"
-                >
-                  <span className="relative size-5">
-                    <MenuIcon
-                      className={`absolute inset-0 size-5 transition-all duration-300 ${
-                        open ? "scale-0 rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"
-                      }`}
-                    />
-                    <XIcon
-                      className={`absolute inset-0 size-5 transition-all duration-300 ${
-                        open ? "scale-100 rotate-0 opacity-100" : "scale-0 -rotate-90 opacity-0"
-                      }`}
-                    />
-                  </span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent
-                side="right"
-                className="w-80 border-r-white/10 bg-(--brand-surface) text-(--brand-on-surface)"
-              >
-                <SheetHeader>
-                  <SheetTitle>{BRAND_NAME}</SheetTitle>
-                  <SheetDescription className="text-white/70">
-                    {t("nav.navigationMenu")}
-                  </SheetDescription>
-                </SheetHeader>
+          <ThemeToggle />
 
-                <nav className="mt-2 flex flex-col gap-1 px-4 pb-6">
-                  {NAV_LINKS.map((item) => (
-                    <SheetClose asChild key={item.href}>
-                      <a
-                        href={langHref(item.href)}
-                        onClick={() => setOpen(false)}
-                        className={`rounded-md px-3 py-2 text-sm ${
-                          isActive(item.href)
-                            ? "bg-white/15 font-medium text-(--brand-on-surface)"
-                            : "text-white/75 hover:bg-white/10 hover:text-(--brand-on-surface)"
+          <div className="md:hidden">
+            {mounted ? (
+              <Sheet open={open} onOpenChange={setOpen}>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={t("nav.openMenu")}
+                    onClick={() => setOpen(true)}
+                    className="text-(--brand-on-surface) hover:bg-white/10 hover:text-(--brand-on-surface)"
+                  >
+                    <span className="relative size-5">
+                      <MenuIcon
+                        className={`absolute inset-0 size-5 transition-all duration-300 ${
+                          open ? "scale-0 rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"
                         }`}
-                      >
-                        {t(item.labelKey)}
-                      </a>
-                    </SheetClose>
-                  ))}
-                </nav>
+                      />
+                      <XIcon
+                        className={`absolute inset-0 size-5 transition-all duration-300 ${
+                          open ? "scale-100 rotate-0 opacity-100" : "scale-0 -rotate-90 opacity-0"
+                        }`}
+                      />
+                    </span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent
+                  side="right"
+                  className="w-80 border-r-white/10 bg-(--brand-surface) text-(--brand-on-surface)"
+                >
+                  <SheetHeader>
+                    <SheetTitle>{BRAND_NAME}</SheetTitle>
+                    <SheetDescription className="text-white/70">
+                      {t("nav.navigationMenu")}
+                    </SheetDescription>
+                  </SheetHeader>
 
-                <div className="border-t border-white/10 px-4 pt-4 pb-6">
-                  <LanguageSwitcher />
-                </div>
-              </SheetContent>
-            </Sheet>
-          ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={t("nav.openMenu")}
-              disabled
-              className="text-(--brand-on-surface) hover:bg-white/10 hover:text-(--brand-on-surface)"
-            >
-              <MenuIcon className="size-5" />
-            </Button>
-          )}
+                  <nav className="mt-2 flex flex-col gap-1 px-4 pb-6">
+                    {NAV_LINKS.map((item) => (
+                      <SheetClose asChild key={item.href}>
+                        <a
+                          href={langHref(item.href)}
+                          onClick={() => setOpen(false)}
+                          className={`rounded-md px-3 py-2 text-sm ${
+                            isActive(item.href)
+                              ? "bg-white/15 font-medium text-(--brand-on-surface)"
+                              : "text-white/75 hover:bg-white/10 hover:text-(--brand-on-surface)"
+                          }`}
+                        >
+                          {t(item.labelKey)}
+                        </a>
+                      </SheetClose>
+                    ))}
+                  </nav>
+
+                  <div className="border-t border-white/10 px-4 pt-4 pb-6">
+                    <LanguageSwitcher />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            ) : (
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={t("nav.openMenu")}
+                disabled
+                className="text-(--brand-on-surface) hover:bg-white/10 hover:text-(--brand-on-surface)"
+              >
+                <MenuIcon className="size-5" />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </header>

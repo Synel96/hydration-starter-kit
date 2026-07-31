@@ -6,6 +6,7 @@ import { usePageContext } from "vike-react/usePageContext";
 import { SITE_URL, BRAND_NAME } from "../components/site";
 import { buildMeta } from "../src/seo";
 import { DEFAULT_LANG, type SupportedLang } from "../src/i18n-config";
+import { THEME_BOOTSTRAP_SCRIPT } from "../src/theme";
 
 export function Head() {
   const pageContext = usePageContext() as {
@@ -26,6 +27,9 @@ export function Head() {
 
   return (
     <>
+      {/* Sets the dark/light class before hydration to avoid a flash of the wrong theme */}
+      <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />
+
       <link rel="icon" href={logoUrl} />
       <link rel="canonical" href={meta.canonicalUrl} />
 
@@ -61,7 +65,14 @@ export function Head() {
       />
 
       {/* Preload the primary (Latin) font — high priority to unblock LCP */}
-      <link rel="preload" href={geistFontUrl} as="font" type="font/woff2" crossOrigin="anonymous" fetchPriority="high" />
+      <link
+        rel="preload"
+        href={geistFontUrl}
+        as="font"
+        type="font/woff2"
+        crossOrigin="anonymous"
+        fetchPriority="high"
+      />
     </>
   );
 }
