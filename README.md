@@ -106,9 +106,19 @@ You can [enable/disable HTML streaming](https://vike.dev/stream) for all or spec
 
 ### Prerendering
 
-[`prerender`](https://vike.dev/prerender) is intentionally left off on this
-branch: language (`/en/`, `/hu/`) is resolved per-request from the URL in
-`pages/+onBeforeRoute.ts`, and Vike's default prerendering would only emit a
-static page for the default-lang `/` route — `/en/...` and `/hu/...` would
-404 on a static-only deploy. Enable it once prerendering enumerates all
-lang-prefixed URLs.
+[`prerender: true`](https://vike.dev/prerender) is set in `pages/+config.ts`,
+so `npm run build` writes static HTML for every page into `dist/client`
+(no SSR server needed at runtime). `vercel.json` deploys `dist/client` as a
+static site (`outputDirectory`).
+
+Language (`/en/`, `/hu/`) is normally resolved per-request from the URL in
+`pages/+onBeforeRoute.ts`, so Vike's default prerendering would only see the
+un-prefixed `/` route. Each page enumerates its own lang-prefixed URLs via a
+[`+onBeforePrerenderStart.ts`](https://vike.dev/onBeforePrerenderStart) hook
+(see `pages/index/+onBeforePrerenderStart.ts`) — add one for every new page.
+`pages/+lang.ts` mirrors this for `<html lang>`, reading `pageContext.lang`
+per request/URL instead of a static value (function-valued settings like
+this must live in their own `+<name>.ts` file, not inline in `+config.ts`).
+
+If a page needs per-request data, disable prerendering for it and deploy
+`dist/server` as a Vercel Function instead.

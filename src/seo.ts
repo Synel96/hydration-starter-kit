@@ -1,5 +1,5 @@
 import { BRAND_NAME, SITE_URL, OG_IMAGE_PATH } from "../components/site";
-import { SUPPORTED_LANGS, DEFAULT_LANG, type SupportedLang } from "./i18n-config";
+import { SUPPORTED_LANGS, DEFAULT_LANG, langPath, type SupportedLang } from "./i18n-config";
 
 type BuildMetaInput = {
   /** Logical pathname without lang prefix, e.g. "/" or "/about" */
@@ -8,10 +8,6 @@ type BuildMetaInput = {
   title?: string | null;
   description?: string | null;
 };
-
-function langPath(pathname: string, lang: SupportedLang) {
-  return pathname === "/" ? `/${lang}/` : `/${lang}${pathname}`;
-}
 
 export function buildMeta({ pathname, lang, title, description }: BuildMetaInput) {
   const canonicalUrl = new URL(langPath(pathname, lang), SITE_URL).toString();

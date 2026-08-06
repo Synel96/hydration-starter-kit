@@ -11,11 +11,17 @@ const config: Config = {
   // BRAND_NAME instead (see src/seo.ts).
   description: "Demo showcasing Vike",
 
-  // NOT prerendered: lang (/en/, /hu/) is resolved per-request in
-  // +onBeforeRoute.ts from the URL, so `vike build` would only emit a
-  // static HTML for the default-lang "/" route — /en/... and /hu/... would
-  // 404 on a static-only deploy. Re-enable once prerendering enumerates all
-  // lang-prefixed URLs (see https://vike.dev/prerender).
+  // `<html lang>` — see pages/+lang.ts (function-valued config settings
+  // must live in their own +<name>.ts file, not inline here).
+
+  // Generates static HTML for every page at build time (no dynamic,
+  // per-request data is used) — see https://vike.dev/prerender. Lang
+  // (/en/, /hu/) is normally resolved per-request in +onBeforeRoute.ts from
+  // the URL, so every page needs its own +onBeforePrerenderStart.ts hook
+  // enumerating its lang-prefixed URLs (see pages/index/+onBeforePrerenderStart.ts)
+  // — otherwise only the un-prefixed default-lang URL gets prerendered.
+  prerender: true,
+
   extends: [vikeReact],
 };
 

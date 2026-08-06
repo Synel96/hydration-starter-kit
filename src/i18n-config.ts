@@ -5,3 +5,8 @@
 export const SUPPORTED_LANGS = ["en", "hu"] as const;
 export type SupportedLang = (typeof SUPPORTED_LANGS)[number];
 export const DEFAULT_LANG: SupportedLang = "en";
+
+/** Prefixes a logical pathname (e.g. "/" or "/about") with a lang segment, matching the URLs +onBeforeRoute.ts parses. */
+export function langPath(pathname: string, lang: SupportedLang) {
+  return pathname === "/" ? `/${lang}/` : `/${lang}${pathname}`;
+}

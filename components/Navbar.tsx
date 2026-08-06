@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/sheet";
 import { BRAND_NAME, NAV_LINKS } from "./site";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { DEFAULT_LANG, type SupportedLang } from "@/src/i18n-config";
+import { DEFAULT_LANG, langPath, type SupportedLang } from "@/src/i18n-config";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -27,7 +27,7 @@ export function Navbar() {
   const { t } = useTranslation();
 
   // Build a URL with the current lang prefix
-  const langHref = (href: string) => (href === "/" ? `/${lang}/` : `/${lang}${href}`);
+  const langHref = (href: string) => langPath(href, lang);
 
   const isActive = (href: string) =>
     href === "/" ? urlPathname === href : urlPathname.startsWith(href);
