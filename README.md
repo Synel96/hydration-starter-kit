@@ -38,8 +38,9 @@ When you pull this repo down as the base for a new project, go through this
 checklist:
 
 - [ ] `package.json` — rename `"name"`
-- [ ] `.env` — set `VITE_SITE_URL` and `VITE_BRAND_NAME` (validated by
-      `src/env.ts` via zod; the app throws on startup if these are missing/invalid)
+- [ ] `.env` — set `VITE_SITE_URL`, `VITE_BRAND_NAME`, and the
+      `VITE_COMPANY_*` (address/email/phone) vars (validated by `src/env.ts`
+      via zod; the app throws on startup if these are missing/invalid)
 - [ ] `assets/logo.svg` — replace with the real logo (used in the navbar,
       favicon, and the page-loading overlay)
 - [ ] `public/og-image.png` — replace the solid-color placeholder with real
@@ -102,3 +103,11 @@ SSR is enabled by default. You can [disable it](https://vike.dev/ssr) for all or
 ### HTML Streaming
 
 You can [enable/disable HTML streaming](https://vike.dev/stream) for all or specific pages.
+
+### Prerendering
+
+[`prerender: true`](https://vike.dev/prerender) is set in `pages/+config.ts`,
+so `npm run build` writes static HTML for every page into `dist/client`
+(no SSR server needed at runtime). `vercel.json` deploys `dist/client` as a
+static site (`outputDirectory`); if a page needs per-request data, disable
+prerendering for it and deploy `dist/server` as a Vercel Function instead.

@@ -75,12 +75,13 @@ export function Navbar() {
                   side="right"
                   className="w-80 border-r-white/10 bg-(--brand-surface) text-(--brand-on-surface)"
                 >
-                  <SheetHeader>
+                  {/* Kept for screen readers (Radix requires an accessible dialog title/description) but not shown visually — BRAND_NAME is already visible in the navbar behind the drawer. */}
+                  <SheetHeader className="sr-only">
                     <SheetTitle>{BRAND_NAME}</SheetTitle>
-                    <SheetDescription className="text-white/70">Navigation menu</SheetDescription>
+                    <SheetDescription>Navigation menu</SheetDescription>
                   </SheetHeader>
 
-                  <nav className="mt-2 flex flex-col gap-1 px-4 pb-6">
+                  <nav className="mt-12 flex flex-col gap-1 px-4 pb-6">
                     {NAV_LINKS.map((item) => (
                       <SheetClose asChild key={item.href}>
                         <a
