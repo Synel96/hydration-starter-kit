@@ -11,11 +11,11 @@ describe("buildMeta", () => {
     expect(meta.image).toBe("https://example.com/og-image.png");
   });
 
-  it("uses page-provided title and description when present", () => {
+  it("combines a page-provided title with the brand name, and uses the page description when present", () => {
     const meta = buildMeta({
       pathname: "/",
       lang: "en",
-      title: "Home | Brand Name",
+      title: "Home",
       description: "Custom description",
     });
 

@@ -15,7 +15,7 @@ function langPath(pathname: string, lang: SupportedLang) {
 
 export function buildMeta({ pathname, lang, title, description }: BuildMetaInput) {
   const canonicalUrl = new URL(langPath(pathname, lang), SITE_URL).toString();
-  const resolvedTitle = title && title.trim().length > 0 ? title : BRAND_NAME;
+  const resolvedTitle = title && title.trim().length > 0 ? `${title} | ${BRAND_NAME}` : BRAND_NAME;
   const resolvedDescription =
     description && description.trim().length > 0
       ? description

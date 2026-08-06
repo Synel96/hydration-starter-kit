@@ -3,7 +3,13 @@
 import logoUrl from "../assets/logo.svg";
 import geistFontUrl from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url";
 import { usePageContext } from "vike-react/usePageContext";
-import { SITE_URL, BRAND_NAME } from "../components/site";
+import {
+  SITE_URL,
+  BRAND_NAME,
+  COMPANY_ADDRESS,
+  COMPANY_EMAIL,
+  COMPANY_PHONE,
+} from "../components/site";
 import { buildMeta } from "../src/seo";
 import { DEFAULT_LANG, type SupportedLang } from "../src/i18n-config";
 import { THEME_BOOTSTRAP_SCRIPT } from "../src/theme";
@@ -60,6 +66,10 @@ export function Head() {
             name: BRAND_NAME,
             url: SITE_URL,
             logo: `${SITE_URL}/logo.svg`,
+            address: COMPANY_ADDRESS,
+            email: COMPANY_EMAIL,
+            telephone: COMPANY_PHONE,
+            // Add more fields as needed: sameAs, contactPoint, etc.
           }),
         }}
       />

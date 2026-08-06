@@ -38,8 +38,9 @@ When you pull this repo down as the base for a new project, go through this
 checklist:
 
 - [ ] `package.json` — rename `"name"`
-- [ ] `.env` — set `VITE_SITE_URL` and `VITE_BRAND_NAME` (validated by
-      `src/env.ts` via zod; the app throws on startup if these are missing/invalid)
+- [ ] `.env` — set `VITE_SITE_URL`, `VITE_BRAND_NAME`, and the
+      `VITE_COMPANY_*` (address/email/phone) vars (validated by `src/env.ts`
+      via zod; the app throws on startup if these are missing/invalid)
 - [ ] `assets/logo.svg` — replace with the real logo (used in the navbar,
       favicon, and the page-loading overlay)
 - [ ] `public/og-image.png` — replace the solid-color placeholder with real
@@ -102,3 +103,12 @@ SSR is enabled by default. You can [disable it](https://vike.dev/ssr) for all or
 ### HTML Streaming
 
 You can [enable/disable HTML streaming](https://vike.dev/stream) for all or specific pages.
+
+### Prerendering
+
+[`prerender`](https://vike.dev/prerender) is intentionally left off on this
+branch: language (`/en/`, `/hu/`) is resolved per-request from the URL in
+`pages/+onBeforeRoute.ts`, and Vike's default prerendering would only emit a
+static page for the default-lang `/` route — `/en/...` and `/hu/...` would
+404 on a static-only deploy. Enable it once prerendering enumerates all
+lang-prefixed URLs.
