@@ -53,9 +53,36 @@ checklist:
 - [ ] `public/robots.txt`, `public/sitemap.xml`, `public/llms.txt` — update
       domain and crawling rules
 - [ ] `LICENSE` — copyright holder
-- [ ] `vercel.json` / `public/_headers` — only relevant if deploying to
-      Vercel / Netlify-or-Cloudflare-Pages respectively; delete whichever you
-      don't need
+- [ ] `vercel.json` — the Content-Security-Policy only allows the site's
+      own origin by default. Add every external origin the project loads
+      _before_ going live, or the browser silently blocks it, e.g.
+      `media-src` for a Cloudinary video, `connect-src` for an API on another
+      domain, `frame-src` for an embedded Google Map. Check the browser
+      console for `Refused to ...` errors after deploying.
+
+## Headers & caching
+
+`vercel.json` (Vercel ignores Netlify-style `public/_headers` files) sets:
+
+- `Cache-Control: immutable` for a year on hashed build output (`/assets`,
+  `/chunks`), and `max-age=0` + a CDN revalidation window on HTML, so new
+  deploys show up immediately while JS/CSS is only downloaded once.
+- Security headers on every route: CSP, HSTS, `X-Frame-Options`,
+  `nosniff`, `Referrer-Policy`, COOP, `Permissions-Policy`.
+
+The CSP allows the inline theme bootstrap script by its sha256 hash (no
+`'unsafe-inline'` for scripts). If you change `THEME_BOOTSTRAP_SCRIPT`,
+update the hash; `src/vercelHeaders.test.ts` fails until you do.
+
+## Mobile nav drawer
+
+`components/ui/push-drawer.tsx` is a mobile menu that pushes the whole page
+aside (with a slight scale-down) instead of overlaying it, while the panel
+swings in with a 3D tilt and a shaded hinge edge. `pages/+Layout.tsx` owns
+the open state and wraps `<main>` + `<Footer>` in `<PushDrawerBody>`; the
+navbar stays outside so it doesn't move. Keep any other `position: fixed`
+element (e.g. a full-page background) outside `<PushDrawerBody>` too, since
+its transform while open would pin it to the page instead of the viewport.
 
 ## Dark mode
 
