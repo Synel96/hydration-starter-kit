@@ -77,8 +77,9 @@ function PushDrawerContent({
         data-slot="push-drawer-content"
         className={cn(
           "fixed inset-y-0 right-0 z-50 flex h-full w-[min(20rem,100vw)] max-w-[100vw] flex-col gap-4 overflow-x-hidden overflow-y-auto border-l bg-clip-padding text-sm",
-          "shadow-[-32px_0_64px_-24px_rgba(0,0,0,0.75)]",
-          !open && "pointer-events-none",
+          // Shadow only while open: the closed panel sits just off-screen,
+          // and its shadow would otherwise bleed into the viewport's edge.
+          open ? "shadow-[-32px_0_64px_-24px_rgba(0,0,0,0.75)]" : "pointer-events-none",
           className
         )}
         style={{
